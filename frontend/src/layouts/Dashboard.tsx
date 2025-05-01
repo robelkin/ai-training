@@ -1,6 +1,6 @@
 import React, { Suspense, ReactNode } from "react";
 import { Outlet } from "react-router-dom";
-import { Home } from "lucide-react";
+import { Home, LayoutGrid, List } from "lucide-react";
 
 import Wrapper from "../components/Wrapper";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -24,6 +24,21 @@ const sidebarNavigation: { title: string; pages: SidebarItemsType[] }[] = [
         href: "/",
         icon: Home,
         title: "Home",
+      },
+      {
+        href: "/navigation",
+        icon: LayoutGrid,
+        title: "Example Layouts",
+      },
+    ],
+  },
+  {
+    title: "Examples",
+    pages: [
+      {
+        href: "/examples/tasks/list",
+        title: "Task List",
+        icon: List,
       },
     ],
   },

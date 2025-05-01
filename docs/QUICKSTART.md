@@ -66,12 +66,15 @@ Before you begin, ensure you have the following installed:
         # VITE_FIREBASE_API_KEY=...
         ```
     
-5.  **Create and Migrate Database:**
-    Run the initial Prisma migration from the **root** directory. This will create the SQLite database file (`backend/dev.db`) and set up the tables based on the schema (`backend/prisma/schema.prisma`).
+5.  **Create, Migrate, and Seed Database:**
+    Run the initial Prisma migration and seed the database from the **root** directory. This will create the SQLite database file (`backend/dev.db`), set up the tables based on the schema (`backend/prisma/schema.prisma`), and populate it with example data.
     ```bash
+    # Apply schema changes
     npm run db:migrate:dev -w backend
+    # Populate with example data
+    npm run db:seed -w backend
     ```
-    You only need to run this the first time or when the database schema changes.
+    You only need to run `migrate dev` the first time or when the database schema changes. You can re-run `db:seed` anytime to reset the example data.
 
 ## Running the Application
 

@@ -9,7 +9,11 @@
     "dev": "nodemon src/server.ts",
     "prisma:generate": "prisma generate",
     "db:migrate:dev": "prisma migrate dev --name init",
+    "db:seed": "prisma db seed",
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
   },
   "keywords": [],
   "author": "",

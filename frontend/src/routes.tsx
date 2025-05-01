@@ -26,6 +26,11 @@ const Crypto = lazy(() => import("./pages/dashboards/Crypto"));
 const HomePage = lazy(() => import("./pages/app/HomePage"));
 const NavigationIndex = lazy(() => import("./pages/app/NavigationIndex"));
 
+// Example Pages
+const ExampleTaskList = lazy(
+  () => import("./pages/examples/tasks/ExampleTaskList")
+);
+
 // Apps
 const Calendar = lazy(() => import("./pages/apps/Calendar"));
 const Chat = lazy(() => import("./pages/apps/Chat"));
@@ -140,6 +145,21 @@ const routes = [
       {
         path: "navigation",
         element: <NavigationIndex />,
+      },
+    ],
+  },
+  {
+    path: "examples",
+    element: <DashboardLayout />,
+    children: [
+      {
+        path: "tasks",
+        children: [
+          {
+            path: "list",
+            element: <ExampleTaskList />,
+          },
+        ],
       },
     ],
   },

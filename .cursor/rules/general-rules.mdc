@@ -1,0 +1,44 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# File Modification Rules
+- Make minimal, focused changes only
+- Always preserve existing content
+- Never rewrite entire files or sections without explicit instruction
+- If uncertain about scope, ask before proceeding
+- if you find yourself rewriting things that haven't been asked for stop, flag the error and unwind it
+
+Always go through the following process: 
+1.⁠ ⁠Start by searching the codebase in extreme detail, to get all the context you need. 
+2.⁠ ⁠Create a detailed plan before doing anything. 
+3.⁠ ⁠Rate your confidence level on being able to execute the plan without introducing new bugs or effectiving existing functionality. 
+4.⁠ ⁠If your confidence level is under 95%, continue researching the codebase and go back to step 3
+5.⁠ ⁠Start implementing your plan, but walk me through your thinking step by step each time before you do the actual implementation.
+ 
+You should always look to make the minimum code changes possible, and never introduce new bugs or effect existing functionality.
+
+
+# Documentation Rules
+- Always check frontend/docs/ and backend/docs/ for relevant documentation when making changes
+- Update or create documentation in Markdown format in frontend/docs/ or backend/docs/ depending on the project you are working in
+- Never create documentation as JSX components unless explicitly requested
+- Document common pitfalls and solutions when encountered
+- Include real examples from the codebase in documentation
+- Link related documentation files together when relevant
+
+# Development Rules
+- Never automatically run `npm run dev` as I will be running the server in a separate terminal. If you want to restart the application, ask and I will do it for you. Never try to run any server yourself. 
+- Don't run terminal commands without asking permission
+- Don't run npx or npm commands without permission, unless it is to refresh the prisma schema
+- When fixing a problem, focus just on that problem. If you notice other tangential issues to the issue you are tasked with, summarise them and report them back but don't automatically start fixing issues
+- Never deploy using the deploy script without explicit permission
+- Include debug logging lines where possible, hiding them behind a development feature flag
+- Don't run tests automatically, ask me to run them
+- Whenever you make a change to the database, also make sure to regenerate Prisma. 
+- Never make changes to the database that could result in losing data. If you're worried about this, then please ask for help or guidance. 
+
+# Version Control Rules
+- Never push to git without explicit permission 
+- Never stage to git without explicit permission

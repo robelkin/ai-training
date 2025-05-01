@@ -10,9 +10,36 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Define an enum for task status
+enum TaskStatus {
+  UPCOMING
+  IN_PROGRESS
+  COMPLETED
+}
+
+// Define an enum for task priority
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
   name      String?
   createdAt DateTime @default(now())
+}
+
+model ExampleTask {
+  id             String     @id @default(uuid())
+  name           String
+  assignedToName String?
+  assignedToAvatar String?
+  dueDate        DateTime?
+  priority       TaskPriority @default(MEDIUM)
+  status         TaskStatus @default(UPCOMING)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 } 
