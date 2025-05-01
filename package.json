@@ -1,0 +1,36 @@
+{
+  "name": "ai-training",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "main": "index.js",
+  "scripts": {
+    "dev": "concurrently \"npm:dev --workspace=backend\" \"npm:dev --workspace=frontend\"",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/robelkin/ai-training.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/robelkin/ai-training/issues"
+  },
+  "homepage": "https://github.com/robelkin/ai-training#readme",
+  "description": "",
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "eslint": "^9.25.1",
+    "eslint-config-prettier": "^10.1.2",
+    "eslint-plugin-prettier": "^5.2.6",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3"
+  }
+}
