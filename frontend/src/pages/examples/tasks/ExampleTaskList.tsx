@@ -20,7 +20,7 @@ import { faBell } from "@fortawesome/free-regular-svg-icons";
 // For demonstration, let's define simplified versions inline or assume they exist
 // import { ExampleTask, TaskStatus, TaskPriority } from "../../../../../backend/src/types/prisma-types"; // Keep commented out
 
-import { fetchApi } from "../../../utils/apiClient"; // CORRECTED relative path
+import { fetchApi } from "../../../utils/apiClient"; // Path should be correct relative to new location
 
 // UNCOMMENTED: Manual type definitions based on Prisma schema:
 enum TaskStatus {
@@ -134,7 +134,7 @@ const TaskBoard = ({ title, tasks }: TaskBoardProps) => {
   );
 };
 
-const ExampleTaskList = () => {
+const ExerciseTaskList = () => {
   const [tasks, setTasks] = useState<ExampleTask[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -145,7 +145,7 @@ const ExampleTaskList = () => {
       setIsLoading(true);
       setError(null);
       try {
-        const fetchedTasks = await fetchApi<ExampleTask[]>('/examples/tasks');
+        const fetchedTasks = await fetchApi<ExampleTask[]>('/exercises/tasks');
         setTasks(fetchedTasks || []);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to fetch tasks');
@@ -164,11 +164,11 @@ const ExampleTaskList = () => {
 
   return (
     <React.Fragment>
-      <Helmet title="Example Task List" />
+      <Helmet title="Task List Exercise" />
       <Container fluid className="p-0">
-        <h1 className="h3 mb-3">Example Task List</h1>
+        <h1 className="h3 mb-3">Task List Exercise</h1>
 
-        {/* Introductory Blurb - Outline Style (matching example) */}
+        {/* Introductory Blurb */}
         {showIntroAlert && (
           <Alert 
             variant="primary" 
@@ -180,17 +180,17 @@ const ExampleTaskList = () => {
               <FontAwesomeIcon icon={faBell} fixedWidth />
             </div>
             <div className="alert-message">
-              <strong>Welcome to the Task Example!</strong>
+              <strong>Welcome to the Task List Exercise!</strong>
               <p className="mb-2">
                 This page demonstrates a basic task list connected to a backend API. 
                 The tasks you see below are fetched live from the database via 
-                <code>/api/examples/tasks</code>.
+                <code>/api/exercises/tasks</code>.
               </p>
               <p className="mb-1">
                 While the read functionality is complete, there are still features 
                 to implement as outlined in the project plan (
-                <a href="/docs/plans/01-Task-Example-API.md" target="_blank" rel="noopener noreferrer"><code>docs/plans/01-Task-Example-API.md</code></a>).
-                Your next steps are to implement the following, ideally using AI assistance:
+                <a href="/docs/plans/01-Task-Exercise-API.md" target="_blank" rel="noopener noreferrer"><code>docs/plans/01-Task-Exercise-API.md</code></a>).
+                Your next steps are to implement the following, using AI assistance:
               </p>
               <ul>
                 <li>Connect the 'New Task' button to the POST endpoint.</li>
@@ -228,4 +228,4 @@ const ExampleTaskList = () => {
   );
 };
 
-export default ExampleTaskList; 
+export default ExerciseTaskList; 

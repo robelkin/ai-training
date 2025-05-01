@@ -1,6 +1,6 @@
 import React, { Suspense, ReactNode } from "react";
 import { Outlet } from "react-router-dom";
-import { Home, LayoutGrid, List } from "lucide-react";
+import { Home, LayoutGrid, List, MessageSquare } from "lucide-react";
 
 import Wrapper from "../components/Wrapper";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -35,12 +35,17 @@ const sidebarNavigation: { title: string; pages: SidebarItemsType[] }[] = [
     ],
   },
   {
-    title: "Examples",
+    title: "Exercises",
     pages: [
       {
-        href: "/examples/tasks/list",
-        title: "Task List",
+        href: "/exercises/tasks/list",
+        title: "Task List Exercise",
         icon: List,
+      },
+      {
+        href: "/exercises/llm-query",
+        title: "LLM Query Exercise",
+        icon: MessageSquare,
       },
     ],
   },
