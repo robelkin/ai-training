@@ -1,8 +1,8 @@
 {
-  "name": "appstack-react",
+  "name": "ai-led-development-application",
   "version": "4.0.1",
-  "description": "AppStack - React Admin & Dashboard Template",
-  "author": "Bootlab <support@bootlab.io>",
+  "description": "Rational Partners - AI Led Development Application",
+  "author": "Rational Partners",
   "private": true,
   "type": "module",
   "scripts": {
