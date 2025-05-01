@@ -22,6 +22,10 @@ const SaaS = lazy(() => import("./pages/dashboards/SaaS"));
 const Social = lazy(() => import("./pages/dashboards/Social"));
 const Crypto = lazy(() => import("./pages/dashboards/Crypto"));
 
+// App Pages (New Section)
+const HomePage = lazy(() => import("./pages/app/HomePage"));
+const NavigationIndex = lazy(() => import("./pages/app/NavigationIndex"));
+
 // Apps
 const Calendar = lazy(() => import("./pages/apps/Calendar"));
 const Chat = lazy(() => import("./pages/apps/Chat"));
@@ -127,11 +131,15 @@ const ProtectedPage = lazy(() => import("./pages/protected/ProtectedPage"));
 const routes = [
   {
     path: "/",
-    element: <LandingLayout />,
+    element: <DashboardLayout />,
     children: [
       {
         path: "",
-        element: <Presentation />,
+        element: <HomePage />,
+      },
+      {
+        path: "navigation",
+        element: <NavigationIndex />,
       },
     ],
   },
@@ -141,7 +149,7 @@ const routes = [
     children: [
       {
         path: "default",
-        element: <Default />,
+        element: <HomePage />,
       },
       {
         path: "analytics",

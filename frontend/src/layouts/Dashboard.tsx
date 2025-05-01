@@ -1,5 +1,6 @@
 import React, { Suspense, ReactNode } from "react";
 import { Outlet } from "react-router-dom";
+import { Home } from "lucide-react";
 
 import Wrapper from "../components/Wrapper";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -9,17 +10,29 @@ import Content from "../components/Content";
 import Footer from "../components/Footer";
 import Settings from "../components/Settings";
 import Loader from "../components/Loader";
-
-import dashboardItems from "../components/sidebar/dashboardItems";
+import { SidebarItemsType } from "../types/sidebar";
 
 interface DashboardProps {
   children?: ReactNode;
 }
 
+const sidebarNavigation: { title: string; pages: SidebarItemsType[] }[] = [
+  {
+    title: "",
+    pages: [
+      {
+        href: "/",
+        icon: Home,
+        title: "Home",
+      },
+    ],
+  },
+];
+
 const Dashboard: React.FC<DashboardProps> = ({ children }) => (
   <React.Fragment>
     <Wrapper>
-      <Sidebar items={dashboardItems} />
+      <Sidebar items={sidebarNavigation} />
       <Main>
         <Navbar />
         <Content>
@@ -31,7 +44,6 @@ const Dashboard: React.FC<DashboardProps> = ({ children }) => (
         <Footer />
       </Main>
     </Wrapper>
-    <Settings />
   </React.Fragment>
 );
 

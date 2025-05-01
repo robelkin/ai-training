@@ -49,8 +49,6 @@ const AuthCover: React.FC<AuthCoverProps> = ({ children }) => (
         </Col>
       </Row>
     </Container>
-
-    <Settings />
   </React.Fragment>
 );
 

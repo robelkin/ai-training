@@ -29,7 +29,6 @@ const Doc: React.FC<DocProps> = ({ children }) => (
         </Content>
       </Main>
     </Wrapper>
-    <Settings />
   </React.Fragment>
 );
 

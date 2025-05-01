@@ -94,18 +94,6 @@ const NavbarComponent = () => {
         <i className="hamburger align-self-center" />
       </span>
 
-      <Form className="d-none d-sm-inline-block">
-        <InputGroup className="input-group-navbar">
-          <Form.Control
-            placeholder={t("Search") as string}
-            aria-label="Search"
-          />
-          <Button variant="">
-            <Search className="lucide" />
-          </Button>
-        </InputGroup>
-      </Form>
-
       <Navbar.Collapse>
         <Nav className="navbar-align">
           <NavbarDropdown
@@ -135,41 +123,7 @@ const NavbarComponent = () => {
             })}
           </NavbarDropdown>
 
-          <NavbarDropdown
-            header="New Notifications"
-            footer="Show all notifications"
-            icon={BellOff}
-            count={notifications.length}
-          >
-            {notifications.map((item, key) => {
-              let icon = <Bell size={18} className="text-warning" />;
-
-              if (item.type === "important") {
-                icon = <AlertCircle size={18} className="text-danger" />;
-              }
-
-              if (item.type === "login") {
-                icon = <Home size={18} className="text-primary" />;
-              }
-
-              if (item.type === "request") {
-                icon = <UserPlus size={18} className="text-success" />;
-              }
-
-              return (
-                <NavbarDropdownItem
-                  key={key}
-                  icon={icon}
-                  title={item.title}
-                  description={item.description}
-                  time={item.time}
-                />
-              );
-            })}
-          </NavbarDropdown>
-
           <NavbarThemeToggle />
-          <NavbarLanguages />
           <NavbarUser />
         </Nav>
       </Navbar.Collapse>

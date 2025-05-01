@@ -15,7 +15,6 @@ const Auth: React.FC<AuthProps> = ({ children }) => (
         <Outlet />
       </div>
     </div>
-    <Settings />
   </React.Fragment>
 );
 

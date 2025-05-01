@@ -26,11 +26,10 @@ const Sidebar = ({ items, showFooter = true }: SidebarProps) => {
       <div className="sidebar-content">
         <PerfectScrollbar>
           <a className="sidebar-brand" href="/">
-            <Logo /> <span className="align-middle me-3">AppStack</span>
+            <Logo /> <span className="align-middle me-3">AI Learning</span>
           </a>
 
           <SidebarNav items={items} />
-          {!!showFooter && <SidebarFooter />}
         </PerfectScrollbar>
       </div>
     </nav>
