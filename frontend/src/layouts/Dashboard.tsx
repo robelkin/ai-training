@@ -16,6 +16,13 @@ interface DashboardProps {
   children?: ReactNode;
 }
 
+// Define the Example Layouts item separately for clarity
+const exampleLayoutsItem: SidebarItemsType = {
+  href: "/navigation",
+  icon: LayoutGrid,
+  title: "Example Layouts",
+};
+
 const sidebarNavigation: { title: string; pages: SidebarItemsType[] }[] = [
   {
     title: "",
@@ -24,11 +31,6 @@ const sidebarNavigation: { title: string; pages: SidebarItemsType[] }[] = [
         href: "/",
         icon: Home,
         title: "Home",
-      },
-      {
-        href: "/navigation",
-        icon: LayoutGrid,
-        title: "Example Layouts",
       },
     ],
   },
@@ -40,6 +42,12 @@ const sidebarNavigation: { title: string; pages: SidebarItemsType[] }[] = [
         title: "Task List",
         icon: List,
       },
+    ],
+  },
+  {
+    title: "Reference",
+    pages: [
+      exampleLayoutsItem,
     ],
   },
 ];

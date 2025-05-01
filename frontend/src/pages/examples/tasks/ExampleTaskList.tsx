@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import {
   Container,
@@ -8,115 +8,55 @@ import {
   Row,
   Col,
   Card,
+  Spinner,
+  Alert,
 } from "react-bootstrap";
-
-import avatar2 from "../../../assets/img/avatars/avatar-2.jpg";
-import avatar3 from "../../../assets/img/avatars/avatar-3.jpg";
-import avatar5 from "../../../assets/img/avatars/avatar-5.jpg";
 import { Plus } from "lucide-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBell } from "@fortawesome/free-regular-svg-icons";
 
-interface Task {
-  id: number;
+// Import backend types (adjust path if needed, or define locally/shared)
+// Assuming types might be manually defined or generated elsewhere if not directly importable
+// For demonstration, let's define simplified versions inline or assume they exist
+// import { ExampleTask, TaskStatus, TaskPriority } from "../../../../../backend/src/types/prisma-types"; // Keep commented out
+
+import { fetchApi } from "../../../utils/apiClient"; // CORRECTED relative path
+
+// UNCOMMENTED: Manual type definitions based on Prisma schema:
+enum TaskStatus {
+  UPCOMING = 'UPCOMING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  COMPLETED = 'COMPLETED'
+}
+enum TaskPriority {
+  LOW = 'LOW',
+  MEDIUM = 'MEDIUM',
+  HIGH = 'HIGH'
+}
+interface ExampleTask {
+  id: string;
   name: string;
-  assignedToName: string;
-  assignedToAvatar: string;
-  dueDate: string;
-  priority: string;
-  priorityVariant: string;
+  description: string | null;
+  status: TaskStatus;
+  priority: TaskPriority;
+  createdAt: string; // Dates will be strings from JSON
+  updatedAt: string;
 }
 
-const todoTasks: Task[] = [
-  {
-    id: 1,
-    name: "Improve email marketing strategy",
-    assignedToName: "Ashley Briggs",
-    assignedToAvatar: avatar5,
-    dueDate: "August 1, 2023",
-    priority: "Medium",
-    priorityVariant: "warning",
-  },
-  {
-    id: 2,
-    name: "Develop new product video",
-    assignedToName: "Carl Jenkins",
-    assignedToAvatar: avatar2,
-    dueDate: "July 15, 2023",
-    priority: "High",
-    priorityVariant: "danger",
-  },
-  {
-    id: 3,
-    name: "Conduct user interviews for new feature",
-    assignedToName: "Bertha Martin",
-    assignedToAvatar: avatar3,
-    dueDate: "June 20, 2023",
-    priority: "Low",
-    priorityVariant: "success",
-  },
-];
+const priorityVariantMap: Record<TaskPriority, string> = {
+  [TaskPriority.LOW]: "success",
+  [TaskPriority.MEDIUM]: "warning",
+  [TaskPriority.HIGH]: "danger",
+};
 
-const inProgressTasks: Task[] = [
-  {
-    id: 1,
-    name: "Implement new analytics tracking",
-    assignedToName: "Carl Jenkins",
-    assignedToAvatar: avatar2,
-    dueDate: "July 1, 2023",
-    priority: "Low",
-    priorityVariant: "success",
-  },
-  {
-    id: 2,
-    name: "Design new marketing campaign",
-    assignedToName: "Bertha Martin",
-    assignedToAvatar: avatar3,
-    dueDate: "August 15, 2023",
-    priority: "High",
-    priorityVariant: "danger",
-  },
-  {
-    id: 3,
-    name: "Conduct A/B testing on landing page",
-    assignedToName: "Ashley Briggs",
-    assignedToAvatar: avatar5,
-    dueDate: "June 30, 2023",
-    priority: "Low",
-    priorityVariant: "success",
-  },
-];
-
-const completedTasks: Task[] = [
-  {
-    id: 1,
-    name: "Optimize website performance",
-    assignedToName: "Bertha Martin",
-    assignedToAvatar: avatar3,
-    dueDate: "June 15, 2023",
-    priority: "Low",
-    priorityVariant: "success",
-  },
-  {
-    id: 2,
-    name: "Develop mobile app prototype",
-    assignedToName: "Ashley Briggs",
-    assignedToAvatar: avatar5,
-    dueDate: "August 10, 2023",
-    priority: "Medium",
-    priorityVariant: "warning",
-  },
-  {
-    id: 3,
-    name: "Conduct user research interviews",
-    assignedToName: "Ashley Briggs",
-    assignedToAvatar: avatar5,
-    dueDate: "July 20, 2023",
-    priority: "Low",
-    priorityVariant: "success",
-  },
-];
+const statusMap: Record<TaskStatus, string> = {
+  [TaskStatus.UPCOMING]: "Upcoming",
+  [TaskStatus.IN_PROGRESS]: "In Progress",
+  [TaskStatus.COMPLETED]: "Completed",
+};
 
 interface TaskTableProps {
-  tasks: Task[];
+  tasks: ExampleTask[];
 }
 
 const TaskTable = ({ tasks }: TaskTableProps) => {
@@ -125,21 +65,10 @@ const TaskTable = ({ tasks }: TaskTableProps) => {
       <thead>
         <tr>
           <th className="align-middle w-25px">
-            <div className="form-check fs-4">
-              <input
-                className="form-check-input tasks-check-all"
-                type="checkbox"
-                id="tasks-check-all"
-              />
-              <label
-                className="form-check-label"
-                htmlFor="tasks-check-all"
-              ></label>
-            </div>
           </th>
           <th className="align-middle w-50">Name</th>
-          <th className="align-middle d-none d-xl-table-cell">Assigned To</th>
-          <th className="align-middle d-none d-xxl-table-cell">Due Date</th>
+          <th className="align-middle d-none d-xl-table-cell">Description</th>
+          <th className="align-middle d-none d-xxl-table-cell">Created</th>
           <th className="align-middle">Priority</th>
           <th className="align-middle text-end">Actions</th>
         </tr>
@@ -148,36 +77,28 @@ const TaskTable = ({ tasks }: TaskTableProps) => {
         {tasks.map((task) => (
           <tr key={task.id}>
             <td>
-              <div className="form-check fs-4">
-                <input className="form-check-input" type="checkbox" />
-                <label className="form-check-label"></label>
-              </div>
             </td>
             <td>
               <strong>{task.name}</strong>
             </td>
-            <td className="d-none d-xl-table-cell">
-              <img
-                src={task.assignedToAvatar}
-                className="rounded-circle me-1"
-                alt={task.assignedToName}
-                width="32"
-                height="32"
-              />{" "}
-              {task.assignedToName}
-            </td>
-            <td className="d-none d-xxl-table-cell">{task.dueDate}</td>
+            <td className="d-none d-xl-table-cell">{task.description || '-'}</td>
+            <td className="d-none d-xxl-table-cell">{new Date(task.createdAt).toLocaleDateString()}</td>
             <td>
-              <Badge bg="" className={`badge-subtle-${task.priorityVariant}`}>
+              <Badge bg="" className={`badge-subtle-${priorityVariantMap[task.priority]}`}>
                 {task.priority}
               </Badge>
             </td>
             <td className="text-end">
               {" "}
-              <Button variant="light">View</Button>{" "}
+              <Button variant="light" size="sm">View</Button>{" "}
             </td>
           </tr>
         ))}
+        {tasks.length === 0 && (
+            <tr>
+                <td colSpan={6} className="text-center p-3">No tasks in this category.</td>
+            </tr>
+        )}
       </tbody>
     </Table>
   );
@@ -185,25 +106,24 @@ const TaskTable = ({ tasks }: TaskTableProps) => {
 
 interface TaskBoardProps {
   title: string;
-  tasks: Task[];
+  tasks: ExampleTask[];
 }
 
 const TaskBoard = ({ title, tasks }: TaskBoardProps) => {
   return (
-    <Card>
+    <Card className="mb-3">
       <Card.Body>
-        <Row>
+        <Row className="mb-2">
           <Col xs={6}>
-            <Card.Title>{title}</Card.Title>
+            <Card.Title as="h5">{title}</Card.Title>
           </Col>
           <Col xs={6}>
             <div className="text-sm-end">
               <Button
                 variant="primary"
-                data-bs-toggle="modal"
-                data-bs-target="#taskModal"
+                size="sm"
               >
-                <Plus /> New Task
+                <Plus size={18} /> New Task
               </Button>
             </div>
           </Col>
@@ -215,15 +135,94 @@ const TaskBoard = ({ title, tasks }: TaskBoardProps) => {
 };
 
 const ExampleTaskList = () => {
+  const [tasks, setTasks] = useState<ExampleTask[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const [showIntroAlert, setShowIntroAlert] = useState<boolean>(true);
+
+  useEffect(() => {
+    const loadTasks = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const fetchedTasks = await fetchApi<ExampleTask[]>('/examples/tasks');
+        setTasks(fetchedTasks || []);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to fetch tasks');
+        setTasks([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadTasks();
+  }, []);
+
+  const upcomingTasks = tasks.filter((task) => task.status === TaskStatus.UPCOMING);
+  const inProgressTasks = tasks.filter((task) => task.status === TaskStatus.IN_PROGRESS);
+  const completedTasks = tasks.filter((task) => task.status === TaskStatus.COMPLETED);
+
   return (
     <React.Fragment>
       <Helmet title="Example Task List" />
       <Container fluid className="p-0">
         <h1 className="h3 mb-3">Example Task List</h1>
 
-        <TaskBoard title="Upcoming" tasks={todoTasks} />
-        <TaskBoard title="In Progress" tasks={inProgressTasks} />
-        <TaskBoard title="Completed" tasks={completedTasks} />
+        {/* Introductory Blurb - Outline Style (matching example) */}
+        {showIntroAlert && (
+          <Alert 
+            variant="primary" 
+            className="alert-outline"
+            onClose={() => setShowIntroAlert(false)}
+            dismissible
+          >
+            <div className="alert-icon">
+              <FontAwesomeIcon icon={faBell} fixedWidth />
+            </div>
+            <div className="alert-message">
+              <strong>Welcome to the Task Example!</strong>
+              <p className="mb-2">
+                This page demonstrates a basic task list connected to a backend API. 
+                The tasks you see below are fetched live from the database via 
+                <code>/api/examples/tasks</code>.
+              </p>
+              <p className="mb-1">
+                While the read functionality is complete, there are still features 
+                to implement as outlined in the project plan (
+                <a href="/docs/plans/01-Task-Example-API.md" target="_blank" rel="noopener noreferrer"><code>docs/plans/01-Task-Example-API.md</code></a>).
+                Your next steps are to implement the following, ideally using AI assistance:
+              </p>
+              <ul>
+                <li>Connect the 'New Task' button to the POST endpoint.</li>
+                <li>Implement functionality to update task status (mark complete/incomplete) via the PUT endpoint.</li>
+                <li>Implement functionality to delete tasks via the DELETE endpoint.</li>
+                <li>Replace the 'View' button with an 'Edit' button and implement task editing functionality.</li>
+              </ul>
+            </div>
+          </Alert>
+        )}
+
+        {isLoading && (
+          <div className="text-center">
+            <Spinner animation="border" role="status">
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          </div>
+        )}
+
+        {error && (
+          <Alert variant="danger">
+            <strong>Error:</strong> {error}
+          </Alert>
+        )}
+
+        {!isLoading && !error && (
+          <>
+            <TaskBoard title={statusMap[TaskStatus.UPCOMING]} tasks={upcomingTasks} />
+            <TaskBoard title={statusMap[TaskStatus.IN_PROGRESS]} tasks={inProgressTasks} />
+            <TaskBoard title={statusMap[TaskStatus.COMPLETED]} tasks={completedTasks} />
+          </>
+        )}
       </Container>
     </React.Fragment>
   );
