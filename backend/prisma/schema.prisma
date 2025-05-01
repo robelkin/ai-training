@@ -42,4 +42,15 @@ model ExampleTask {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model MonthlyAnalytics {
+  id              Int @id @default(autoincrement())
+  month           Int // 1 for January, 12 for December
+  year            Int
+  sessionDuration Int // Average session duration in minutes
+  pageViews       Int // Total page views for the month
+  totalVisits     Int // Total visits for the month
+
+  @@unique([month, year]) // Ensure only one entry per month/year combination
 } 

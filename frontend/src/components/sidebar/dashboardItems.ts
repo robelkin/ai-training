@@ -52,6 +52,29 @@ const navigationSection = [
   },
 ] as unknown as SidebarItemsType[];
 
+// Define the new Exercises section
+const exercisesSection = [
+  {
+    href: "/exercises", // Base path, maybe not directly clickable or points to an overview
+    icon: CheckSquare, // Use an appropriate icon
+    title: "Exercises",
+    children: [
+      {
+        href: "/exercises/llm-query",
+        title: "LLM Query",
+      },
+      {
+        href: "/exercises/tasks/list", // Assuming this is the correct path from routes.tsx
+        title: "Task List",
+      },
+      {
+        href: "/exercises/analytics-chart",
+        title: "Analytics Chart",
+      },
+    ],
+  },
+] as unknown as SidebarItemsType[];
+
 const appsSection = [
   {
     href: "/ecommerce",
@@ -474,6 +497,10 @@ const navItems = [
   {
     title: "Navigation",
     pages: navigationSection,
+  },
+  {
+    title: "Exercises", // Add the new section title
+    pages: exercisesSection, // Add the new section pages
   },
   {
     title: "Apps",

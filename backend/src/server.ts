@@ -4,6 +4,7 @@ import cors from 'cors'; // Import cors
 
 // Import routes
 import exerciseTaskRoutes from './routes/exerciseTask.routes'; // Updated import path and variable name
+import analyticsRoutes from './routes/analytics.routes'; // Import the new analytics routes
 
 // Load environment variables from .env file
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(express.json()); // Parse JSON bodies (should come after CORS typically)
 
 // --- API Routes ---
 app.use('/api/exercises/tasks', exerciseTaskRoutes); // Use updated variable name
+app.use('/api/analytics', analyticsRoutes); // Mount the analytics routes
 
 // Simple Health Check Route (Keep accessible at root)
 app.get('/health', (req: Request, res: Response) => {

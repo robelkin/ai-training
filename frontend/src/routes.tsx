@@ -33,6 +33,9 @@ const ExerciseTaskList = lazy(
 const LlmQueryExercise = lazy(
   () => import("./pages/exercises/llm-query/LlmQuery")
 );
+const AnalyticsChartExercise = lazy(
+  () => import("./pages/exercises/analytics/AnalyticsChart")
+);
 
 // Apps
 const Calendar = lazy(() => import("./pages/apps/Calendar"));
@@ -167,6 +170,10 @@ const routes = [
       {
         path: "llm-query",
         element: <LlmQueryExercise />,
+      },
+      {
+        path: "analytics-chart",
+        element: <AnalyticsChartExercise />,
       },
     ],
   },

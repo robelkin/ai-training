@@ -95,6 +95,37 @@ async function main() {
   });
   console.log(`Created ${result.count} tasks.`);
 
+  console.log('Seeding monthly analytics data...');
+  const analyticsData = [
+    { month: 1, year: 2024, sessionDuration: 10, pageViews: 5000, totalVisits: 2000 },
+    { month: 2, year: 2024, sessionDuration: 11, pageViews: 4550, totalVisits: 2250 },
+    { month: 3, year: 2024, sessionDuration: 9,  pageViews: 4980, totalVisits: 2400 },
+    { month: 4, year: 2024, sessionDuration: 10, pageViews: 5520, totalVisits: 2750 },
+    { month: 5, year: 2024, sessionDuration: 12, pageViews: 5100, totalVisits: 2500 },
+    { month: 6, year: 2024, sessionDuration: 11, pageViews: 4750, totalVisits: 2800 },
+    { month: 7, year: 2024, sessionDuration: 13, pageViews: 5300, totalVisits: 3100 },
+    { month: 8, year: 2024, sessionDuration: 12, pageViews: 5900, totalVisits: 3500 },
+    { month: 9, year: 2024, sessionDuration: 10, pageViews: 5200, totalVisits: 3000 },
+    { month: 10, year: 2024, sessionDuration: 11, pageViews: 5800, totalVisits: 3300 },
+    { month: 11, year: 2024, sessionDuration: 13, pageViews: 6200, totalVisits: 3800 },
+    { month: 12, year: 2024, sessionDuration: 12, pageViews: 5600, totalVisits: 3500 },
+  ];
+
+  // Clear existing analytics data first to ensure consistency if the seed data changes
+  console.log('Deleting existing monthly analytics data...');
+  await prisma.monthlyAnalytics.deleteMany({}); 
+  console.log('Existing monthly analytics data deleted.');
+
+  console.log('Creating monthly analytics data...');
+  for (const data of analyticsData) {
+    await prisma.monthlyAnalytics.upsert({
+      where: { month_year: { month: data.month, year: data.year } }, // Using the @@unique constraint
+      update: data, // Update if exists (though we delete first)
+      create: data, // Create if not exists
+    });
+  }
+  console.log(`Monthly analytics data seeded for ${analyticsData.length} months.`);
+
   console.log(`Seeding finished.`);
 }
 
