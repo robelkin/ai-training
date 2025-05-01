@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors'; // Import cors
 
 // Import routes
-import exampleTaskRoutes from './routes/exampleTask.routes'; 
+import exerciseTaskRoutes from './routes/exerciseTask.routes'; // Updated import path and variable name
 
 // Load environment variables from .env file
 dotenv.config();
@@ -23,7 +23,7 @@ app.use(cors({
 app.use(express.json()); // Parse JSON bodies (should come after CORS typically)
 
 // --- API Routes ---
-app.use('/api/examples/tasks', exampleTaskRoutes); // Use the example task routes
+app.use('/api/exercises/tasks', exerciseTaskRoutes); // Use updated variable name
 
 // Simple Health Check Route (Keep accessible at root)
 app.get('/health', (req: Request, res: Response) => {
