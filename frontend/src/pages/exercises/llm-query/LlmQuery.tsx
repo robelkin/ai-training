@@ -41,6 +41,9 @@ const LlmQuery = () => {
               <p className="mb-1">
                 To make this page functional, you'll need to implement the following steps, using AI assistance:
               </p>
+              <p className="mb-2">
+                Suggestion: Before you start, create a brief plan using <code>@WRITE_PLANNING_DOC.md</code> to outline how you'll implement the task list below.
+              </p>
               <ul>
                 <li>
                   <strong>Task 1: Backend Integration:</strong> Create a new API endpoint in the backend (e.g., <code>/api/llm/query</code>).
